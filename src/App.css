@@ -36,3 +36,9 @@
     transform: rotate(360deg);
   }
 }
+.my-form-bg {
+  background-color: #8f4f4f; /* Replace with your desired background color */
+  padding: 20px; /* Adjust the padding as needed */
+  border-radius: 10px; /* Add border-radius for rounded corners */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Add box-shadow for a subtle shadow effect */
+}
