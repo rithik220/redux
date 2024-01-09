@@ -6,9 +6,10 @@ import { Link } from 'react-router-dom'
 
 const Read = () => {
     const [id, setId] = useState()
+    const [radioData, setRadioData] = useState("");
     const [showPoppup, setShowPopup] = useState(false)
     const dispatch = useDispatch()
-    const { users, loading } = useSelector((state) => state.app)
+    const { users, loading, searchData  } = useSelector((state) => state.app)
     useEffect(() => {
         dispatch(showUser());
     }, []);
@@ -19,23 +20,51 @@ const Read = () => {
     }
 
     return (
-        <div>
-            {showPoppup && <CustomModal id={id} showPoppup={showPoppup} setShowPopup={setShowPopup}/>}
-            <h1>Users Data</h1>
-            {users &&
-                users.map((ele) => (
-                        <div key={ele.id}class="card w-50 mx-auto">
-                            <div class="card-body">
-                                <h5 class="card-title">{ele.name}</h5>
-                                <h6 class="card-subtitle mb-2 text-muted">{ele.email}</h6>
-                                <p class="card-text">{ele.gender}</p>
-                                <button type="button" class="btn btn-primary mx-2" onClick={() =>[setId(ele.id), setShowPopup(true)]}>View</button>
-                                <Link to={`/edit/${ele.id}`} type="button" class="btn btn-info mx-2">Edit</Link>
-                                <Link   type="button" onClick= {() => dispatch(deleteUser(ele.id))} class="btn btn-danger mx-2">Delete</Link>
-                            </div>
-                        </div>
-                ))}
-        </div>
+    <div>
+        {users &&
+          users
+            .filter((ele) => {
+              if (searchData.length === 0) {
+                return ele;
+              } else {
+                return ele.name
+                  .toLowerCase()
+                  .includes(searchData.toLowerCase());
+              }
+            })
+            .filter((ele) => {
+              if (radioData === "Male") {
+                return ele.gender === radioData;
+              } else if (radioData === "Female") {
+                return ele.gender === radioData;
+              } else return ele;
+            })
+
+            .map((ele) => (
+              <div key={ele.id} className="card w-50 mx-auto my-2">
+                <div className="card-body">
+                  <h5 className="card-title">{ele.name}</h5>
+                  <h6 className="card-subtitle mb-2 text-muted">{ele.email}</h6>
+                  <p className="card-text">{ele.gender}</p>
+                  <button
+                    className="card-link"
+                    onClick={() => [setId(ele.id), setShowPopup(true)]}
+                  >
+                    View
+                  </button>
+                  <Link to={`/edit/${ele.id}`} className="card-link">
+                    Edit
+                  </Link>
+                  <Link
+                    onClick={() => dispatch(deleteUser(ele.id))}
+                    className="card-link"
+                  >
+                    Delete
+                  </Link>
+                </div>
+              </div>
+            ))}
+    </div>
     )
 }
 

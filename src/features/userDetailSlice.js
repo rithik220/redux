@@ -96,7 +96,13 @@ export const userDetail = createSlice({
         loading: false,
         error: null,
     },
-    reducers: {},
+    reducers: {
+        searchUser: (state, action) => {
+          console.log(action.payload);
+          state.searchData = action.payload;
+        },
+      },
+    
     extraReducers: (builder) => {
         builder
             .addCase(createUser.pending, (state) => {
@@ -161,3 +167,4 @@ export const userDetail = createSlice({
 });
 
 export default userDetail.reducer;
+export const { searchUser } = userDetail.actions;
